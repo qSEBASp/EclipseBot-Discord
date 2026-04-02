@@ -65,22 +65,20 @@ async def on_ready():
 async def on_voice_state_update(member, before, after):
     ID_CanalCreador = 1485459503855177822 
     
-    # 1. LÓGICA DE CREACIÓN
+    # 1. LÓGICA DE CREACIÓN (Solo para el Dueño)
     if after.channel and after.channel.id == ID_CanalCreador:
         guild = member.guild
         category = after.channel.category
         
-        # PERMISOS PERSONALIZADOS:
-        # @everyone: No puede conectar (si quieres que nazca privada) o Sí puede (si nace pública)
-        # El Creador: Tiene "poderes de admin" locales (gestionar canal, mover miembros, gestionar permisos)
+        # PERMISOS: Solo el creador tiene 'manage_channels' y 'manage_permissions'
         overwrites = {
-            guild.default_role: discord.PermissionOverwrite(connect=True),
+            guild.default_role: discord.PermissionOverwrite(connect=True), # Público por defecto
             member: discord.PermissionOverwrite(
                 manage_channels=True, 
+                manage_permissions=True, # Solo él puede usar los botones y el engranaje
                 move_members=True, 
-                manage_permissions=True,
-                view_channel=True,
-                connect=True
+                connect=True,
+                view_channel=True
             )
         }
         
@@ -92,9 +90,9 @@ async def on_voice_state_update(member, before, after):
         
         await member.move_to(new_channel)
 
-        # Enviamos el panel de control
+        # Mensaje de bienvenida con el Panel
         await new_channel.send(
-            content=f"👑 **{member.mention}**, ¡esta es tu sala privada!\nUsa los botones de abajo para gestionarla. Solo tú tienes permisos de administrador aquí.",
+            content=f"👑 **{member.mention}**, eres el dueño de esta sala.\nSolo tú puedes usar estos botones para configurarla.",
             view=ControlPanel()
         )
 
