@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import secrets
+import config
 
 intents = discord.Intents.default()
 intents.voice_states = True
@@ -52,14 +52,15 @@ class ControlPanel(discord.ui.View):
 
 @bot.event
 async def on_ready():
-    # Mantiene los botones activos tras reiniciar el bot
-    bot.add_view(ControlPanel())
+    # Esto vincula los botones para que el bot los reconozca
+    bot.add_view(ControlPanel()) 
     print(f"✅ Bot conectado como {bot.user}")
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    ID_CanalCreador = 1485459503855177820 # Tu ID de canal
-    
+    ID_CanalCreador = 1485459503855177822 # Tu ID de canal
+    if after.channel:
+        print(f"Detectado movimiento al canal: {after.channel.name} (ID: {after.channel.id})")
     # 1. LÓGICA DE CREACIÓN
     if after.channel and after.channel.id == ID_CanalCreador:
         guild = member.guild
@@ -98,4 +99,4 @@ async def on_voice_state_update(member, before, after):
             except discord.NotFound:
                 pass
 
-bot.run(secrets.TOKEN)
+bot.run(config.TOKEN)
