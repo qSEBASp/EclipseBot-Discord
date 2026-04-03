@@ -53,7 +53,33 @@ class ControlPanel(discord.ui.View):
         
         estado = "🔓 **PÚBLICO**" if overwrites.connect else "🔒 **PRIVADO**"
         await interaction.response.send_message(f"La sala ahora es {estado}", ephemeral=True)
+    
+    @discord.ui.button(label="Hacer Invisible", emoji="👻", style=discord.ButtonStyle.secondary)
+    async def toggle_phantom_mode(self, interaction: discord.Interaction, button: discord.Button):
+            # 1. Verificar que el usuario esté en su canal de voz
+        voice_state = interaction.user.voice
+        if not voice_state or voice_state.channel.name != f"Canal de {interaction.user.name}": # O la lógica de validación que use el bot
+            return await interaction.response.send_message("❌ Solo puedes ocultar tu propia sala.", ephemeral=True)
 
+        channel = voice_state.channel
+        everyone_role = interaction.guild.default_role
+        current_overwrites = channel.overwrites_for(everyone_role)
+
+            # 2. Lógica del Toggle
+            # Si view_channel no es False, significa que es visible. Lo ponemos en False.
+        if current_overwrites.view_channel is not False:
+            current_overwrites.view_channel = False
+            nuevo_estado = "ahora es **invisible** para los demás. 👻"
+            button.style = discord.ButtonStyle.danger # Cambia el color a rojo para indicar "bloqueado"
+        else:
+            current_overwrites.view_channel = None
+            nuevo_estado = "vuelve a ser **visible**."
+            button.style = discord.ButtonStyle.secondary
+
+        # ESTAS LÍNEAS DEBEN LLEVAR LOS MISMOS ESPACIOS QUE EL 'IF' ARRIBA:
+        await channel.set_permissions(everyone_role, overwrite=current_overwrites)
+        await interaction.message.edit(view=self)
+        await interaction.response.send_message(f"La sala {nuevo_estado}", ephemeral=True)
 # --- EVENTOS DEL BOT ---
 
 @bot.event
@@ -63,7 +89,7 @@ async def on_ready():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    ID_CanalCreador = 1485459503855177822 
+    ID_CanalCreador = 1489300887582277703 
     
     # 1. LÓGICA DE CREACIÓN (Solo para el Dueño)
     if after.channel and after.channel.id == ID_CanalCreador:
