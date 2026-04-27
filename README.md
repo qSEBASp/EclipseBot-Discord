@@ -18,8 +18,8 @@
 EclipseBot es una herramienta integral desarrollada para mejorar la experiencia de usuario y simplificar la gestión de comunidades en Discord. Su objetivo principal es automatizar tareas repetitivas de moderación, proporcionar herramientas útiles a los usuarios y facilitar la administración del servidor mediante comandos intuitivos.
 
 <p align="center">
-  <img src="[INSERTAR_IMAGEN_DE_CAPTURA_DE_PANTALLA_OPCIONAL]" alt="Captura de EclipseBot en Acción" width="600px">
-</p>
+  <img src="./bot-funcionando.png" alt="Captura de EclipseBot en Acción" width="600px">
+</p>L
 
 ## ✨ Características Principales
 
