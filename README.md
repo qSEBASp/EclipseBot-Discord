@@ -83,7 +83,7 @@ Este proyecto fue desarrollado por:
 
 **Sebastian Quiqui Fonque**
 * [@qSEBASp en GitHub](https://github.com/qSEBASp)
-* [Perfil de LinkedIn (Recomendado)]
+* [Perfil de LinkedIn](https://www.linkedin.com/in/sebas-quiqui-dev/)
 * [sebasfonque@gmail.com](mailto:sebasfonque@gmail.com)
 
 ---
